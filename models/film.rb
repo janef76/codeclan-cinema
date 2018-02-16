@@ -60,4 +60,17 @@ class Film
       return result
     end
 
+    def Film.delete_all()
+      sql = "DELETE FROM films"
+      SqlRunner.run(sql)
+    end
+
+    def Film.find(id)
+      sql = "SELECT * FROM films WHERE id = $1"
+      values = [id]
+      film_hash = SqlRunner.run(sql, values).first
+      film = Film.new(film_hash)
+      return film
+    end
+
 end

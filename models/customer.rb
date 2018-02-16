@@ -6,7 +6,7 @@ class Customer
   attr_accessor :name, :funds
 
   def initialize( options )
-    @id = options['id'].to_i if options['id']
+    @id = options['id'].to_i if options['id'] != nil
     @name = options['name']
     @funds = options['funds'].to_i
   end
@@ -59,6 +59,25 @@ class Customer
     films = SqlRunner.run(sql, values)
     result = films.map {|film|Film.new(film)}
     return result
+  end
+
+  def buy_tickets(film_id)
+    film = Film.find(film_id).price
+    @funds -= film
+    update()
+  end
+
+  def Customer.delete_all()
+    sql = "DELETE FROM customers"
+    SqlRunner.run(sql)
+  end
+
+  def Customer.find(id)
+    sql = "SELECT * FROM customers WHERE id = $1"
+    values = [id]
+    customer_hash = SqlRunner.run(sql, values).first
+    customer = Customer.new(customer_hash)
+    return customer
   end
 
 end
