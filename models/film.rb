@@ -60,6 +60,13 @@ class Film
       return result
     end
 
+      def count_tickets()
+        sql = "SELECT COUNT(*) FROM tickets WHERE film_id = $1"
+        values = [@id]
+        count = SqlRunner.run(sql, values).first
+        return count['count'].to_i
+      end
+
     def Film.delete_all()
       sql = "DELETE FROM films"
       SqlRunner.run(sql)
