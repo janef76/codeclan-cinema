@@ -72,6 +72,13 @@ class Customer
     SqlRunner.run(sql)
   end
 
+  def count_films()
+    sql = "SELECT COUNT(*) FROM tickets WHERE customer_id = $1"
+    values = [@id]
+    count = SqlRunner.run(sql, values).first
+    return count['count'].to_i
+  end
+
   def Customer.find(id)
     sql = "SELECT * FROM customers WHERE id = $1"
     values = [id]
